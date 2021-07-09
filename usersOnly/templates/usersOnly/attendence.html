@@ -25,9 +25,9 @@
 {% block body %}
     <a href="/"><button type="button" class="btn btn-success mb-4">Back</button></a>
     <div class= "student-table">
-        {% if date_not_filled %}
+        {% if illegal_entry %}
             <div class= "alert alert-danger" role="alert">
-                <p>Please fill the date of the class. Note that you'll have to fill up the Attendence Records once again. </p>
+                <p> Illegal Entry Attempt. Please fill the form again and avoid messing with the HTML. </p>
             </div>
         {% endif %}
         <form method="post" action="#">
@@ -39,18 +39,18 @@
             <br>
             <div class="form-group">
                 <label for="classdate">Date of Class</label>
-                <input type="date" class="form-control" id="classdate" name="date"> 
+                <input type="date" class="form-control" id="classdate" name="date" required> 
             </div>
             <br>
 
             <div class="form-group">
                 <label for="classtime">Time of Class</label>
-                <select class="form-select" aria-label="Default select example" id="classtime" name="time">
+                <select class="form-select" aria-label="Default select example" id="classtime" name="time" required>
                     <option value="2">2 p.m.</option>
                     <option value="3">3 p.m.</option>
                     <option value="4">4 p.m.</option>
-                    <option value="4">5 p.m.</option>
-                    <option value="4">6 p.m.</option>
+                    <option value="5">5 p.m.</option>
+                    <option value="6">6 p.m.</option>
                 </select>
             </div>
             <br>

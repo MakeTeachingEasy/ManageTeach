@@ -27,6 +27,20 @@
 {% block body %}
 <a href="/"><button type="button" class="btn btn-success mb-4">Back</button></a>
 <div class= "student-table">
+    {% if submitted %}
+      <div class="alert alert-primary mb-5" role="alert">
+        <h5> You have succesfully submitted the following logs: </h5>
+        <ul>
+          {% for thislog in log_array %}
+            {% if thislog.is_present %}
+              <li> <b> {{thislog.student}} </b> : Present on <b>{{thislog.date}}</b> </li>
+            {% else %}
+               <li> <b> {{thislog.student}} </b> : {{thislog.AbsenceType}} Absence on <b>{{thislog.date}}</b></li>
+            {% endif %}
+          {% endfor %}
+        </ul>
+      </div>
+    {% endif %}
     <label for= "tutor-intro"> Attendence Logs by
     <h1 id="tutor-intro"> {{user.first_name}} {{user.last_name}} </h1>
     </label>
@@ -37,6 +51,7 @@
         <th scope="col">Student</th>
         <th scope="col">Date</th>
         <th scope="col">Time</th>
+        <th scope="col"> Type </th>
         </tr>
     </thead>
     <tbody>
@@ -46,6 +61,13 @@
         <td>{{log.student}}</td>
         <td>{{log.date}}</td>
         <td>{{log.time}}</td>
+        <td>
+          {% if log.is_present %}
+            Present
+          {% else %}
+            {{log.AbsenceType}} Absence
+          {% endif %}
+        </td>
         </tr>
         {% endfor %}
     </tbody>
