@@ -48,6 +48,8 @@ def getRecords(response, year= datetime.date.today().year, month=datetime.date.t
         "start_date_str": str(datetime.date(year,month,day)),
         "records": past_week_logs,
         "this_month": MONTHS[datetime.date(year,month,day).month-1],
+        "uninformed": AbsenceType.objects.get(type="Uninformed"),
+        "informed": AbsenceType.objects.get(type="Informed"),
     })
 
 def error_404_view(response, exception):

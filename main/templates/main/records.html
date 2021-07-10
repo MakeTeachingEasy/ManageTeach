@@ -41,6 +41,19 @@
                 </form>
             </div> <!--card-body-->
         </div><!--card-->
+
+
+        <div class="alert alert-primary mb-3" role="alert">
+                <h3> Abbreviations </h3>
+                <ul>
+                <li> <b> P </b>: Present </li>
+                <li> <b> IA </b>: Informed Absence </li>
+                <li> <b> UA </b>: Uninformed Absence </li>
+                <li> <b> NONE </b>: None of these </li>
+                </ul>
+        </div>  
+
+
         <div class= "card">
             <div class="card-body">
                 {% for date, date_records in records.items  %} 
@@ -64,9 +77,11 @@
                                     <td> {{record.time}} </td>
                                     <td>
                                         {% if record.is_present %}
-                                            Present
-                                        {% else %}
-                                            {{record.AbsenceType}} Absence
+                                            <p class="text-success"><b> P </b> </p>
+                                        {% elif record.AbsenceType == informed %}
+                                            <p class="text-warning"><b> IA </b> </p>
+                                        {% elif record.AbsenceType == uninformed %}
+                                            <p class="text-danger"><b> UA </b> </p>
                                         {% endif %}
                                     </td>
                                     </tr>                                
