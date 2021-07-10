@@ -1,0 +1,100 @@
+{% extends "main/base.html" %}
+
+{% block title %}
+    {{this_month}} {{start_date.day}}, {{start_date.year}}
+{% endblock title %}    
+
+
+{% block style %}
+
+  @media screen and (min-width: 1060px){
+
+
+    .student-table{
+      width:900px;
+      margin: auto;
+      padding: 50px;
+      border: 1px solid black;
+      border-radius: 25px;
+      background: #fff;
+    }
+
+    
+  }
+{% endblock style %}
+
+
+{% block body %}
+    <a href="/"><button type="button" class="btn btn-success mb-4">Back</button></a>
+
+      
+    <div class= "student-table">
+        <h1 class="mb-5"> Attendence Records </h1> 
+        <div class="card mb-5">
+            <div class="card-body">
+                <form method= "GET" action="#">      
+                    <div class="mb-3">
+                        <label for="dateQ" class="form-label"><h6> Find Attendance Records for the last 7 days from </h6></label>
+                        <input type="date" name="dateQuery" class="form-control" id="dateQ" value={{start_date_str}}>
+                    </div>
+                    <button type="submit" class="btn btn-primary"> Search </button>
+                </form>
+            </div> <!--card-body-->
+        </div><!--card-->
+        <div class= "card">
+            <div class="card-body">
+                {% for date, date_records in records.items  %} 
+                        <h3> {{date}} </h3>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Student</th>
+                                <th scope="col">Class</th>
+                                <th scope= "col"> Time </th>
+                                <th scope="col">Type</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for record in date_records  %}
+                                    <tr>
+                                    <th scope="row" class= "index"></th>
+                                    <td>{{record.student.f_name}} {{record.student.l_name}}</td>
+                                    <td>{{record.student.grade}} ({{record.student.board}})</td>
+                                    <td> {{record.time}} </td>
+                                    <td>
+                                        {% if record.is_present %}
+                                            Present
+                                        {% else %}
+                                            {{record.AbsenceType}} Absence
+                                        {% endif %}
+                                    </td>
+                                    </tr>                                
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                        <hr>
+                {% endfor %}
+            </div>
+        </div>
+    </div> <!--student-table-->
+{% endblock body %}
+
+{% block script %}
+  indexTable = (t)=> {
+  indexes= t.getElementsByClassName("index");
+  for (let i=1; i<=indexes.length; i++){
+    indexes[i-1].innerHTML= i;
+  }
+}
+
+document.addEventListener('DOMContentLoaded', ()=>{
+  tables= document.getElementsByTagName("table")
+  for (let i=0; i<tables.length; i++){
+    indexTable(tables[i]);
+  }
+});
+
+{% endblock script %}
+
+    
