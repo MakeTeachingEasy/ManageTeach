@@ -1,7 +1,8 @@
-from django.http.response import HttpResponseRedirect
+from django.http.response import HttpResponse, HttpResponseRedirect
 from django.shortcuts import redirect, render
 import datetime
 from main.models import Student, Log, Grade, AbsenceType
+from usersOnly.models import TutorSlot, DAY_CHOICES, TIME_CHOICES
 from django.contrib.auth.models import User
 # Create your views here.
 
@@ -59,3 +60,40 @@ def myLogView(response, submitted=False, log_array=[]):
         })
     else:
         return redirect('/login')
+
+def modifyScheduleView(response):
+    if not response.user.is_authenticated:
+        return redirect("/login")
+
+    if response.method=="POST":
+        TutorSlot.objects.filter(tutor=response.user).delete()
+        for day_code, day in DAY_CHOICES:
+            for time, time_string in TIME_CHOICES:
+                if response.POST.get(f"{day_code}{time_string}"):
+                    slot= TutorSlot(tutor= response.user, day=day_code, time=time)
+                    slot.save()
+        return redirect("/user/my-slots")
+    return render(response, "usersOnly/modifySchedule.html", {
+        "user": response.user,
+        "days": DAY_CHOICES,
+        "times": TIME_CHOICES,
+    })
+
+def mySlotsView(response):
+    if not response.user.is_authenticated:
+        return redirect("/login")
+    tutor_slots= TutorSlot.objects.filter(tutor= response.user).order_by("time")
+    return render(response, "usersOnly/mySlots.html", {
+        "user": response.user,
+        "slots" : tutor_slots,
+        "days": DAY_CHOICES,
+    })
+
+def tutorSlotsView(response):
+    print(datetime.date.today().strftime('%A'))
+    return render(response, "usersOnly/tutorSlots.html", {
+        "slots": TutorSlot.objects.all().order_by("time"),
+        "days": DAY_CHOICES,
+        "times": TIME_CHOICES,
+        "today": datetime.date.today().strftime('%A'),
+    })

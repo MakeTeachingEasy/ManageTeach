@@ -1,0 +1,90 @@
+{% extends "main/base.html" %}
+
+{% block title %}
+    Modify Schedule
+{% endblock title %}    
+
+
+{% block style %}
+
+  @media screen and (min-width: 1060px){
+
+
+    .student-table{
+      width:900px;
+      margin: auto;
+      padding: 50px;
+      border: 1px solid black;
+      border-radius: 25px;
+      background: #fff;
+    }
+
+    
+  }
+{% endblock style %}
+
+
+{% block body %}
+<a href="/"><button type="button" class="btn btn-success mb-4">Back</button></a>
+<div class= "student-table">
+    <form method="post" action="#">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="user">Tutor's Name</label>
+            <input type="text" class="form-control" name="user" value="{{user.first_name}} {{user.last_name}}" disabled>
+        </div>
+        <br>
+        <div class="card">
+            <div class="card-body">
+                <p> Please fill your availability </p>
+                <hr>
+                <table class="table">
+                    <thead>
+                        <tr>
+                        <th scope="col">Day</th>
+                        <th scope="col">Slots <i> (Select all that apply) </i></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for day_code, day in days  %}
+                            <tr>
+                            <th scope="row"> {{day}} </th>
+                            <td>
+                                {% for time, time_code in times %}
+                                    <div class="form-check form-switch m-3">
+                                        <input class="form-check-input" type="checkbox" name= "{{day_code}}{{time_code}}" value="selected">
+                                        <label class="form-check-label" for="{{day_code}}{{time_code}}">{{time}}</label>
+                                    </div>
+                                {% endfor %}
+                            </td>
+                            <tr>
+                        {% endfor %}
+                    </tbody>
+                </table>      
+                <button type="submit" class="btn btn-primary">Submit</button>                                      
+            </div>
+        </div>
+        <br>
+    </form>    
+</div> <!--student-table-->
+{% endblock body %}
+
+
+{% block script %}
+  indexTable = (t)=> {
+  indexes= t.getElementsByClassName("index");
+  for (let i=1; i<=indexes.length; i++){
+    indexes[i-1].innerHTML= i;
+  }
+}
+
+document.addEventListener('DOMContentLoaded', ()=>{
+  tables= document.getElementsByTagName("table")
+  for (let i=0; i<tables.length; i++){
+    indexTable(tables[i]);
+  }
+});
+
+{% endblock script %}
+
+    

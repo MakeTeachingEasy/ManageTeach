@@ -1,0 +1,89 @@
+{% extends "main/base.html" %}
+
+{% block title %}
+    Tutor Slots
+{% endblock title %}    
+
+
+{% block style %}
+
+  @media screen and (min-width: 1060px){
+
+
+    .student-table{
+      width:900px;
+      margin: auto;
+      padding: 50px;
+      border: 1px solid black;
+      border-radius: 25px;
+      background: #fff;
+    }
+
+    
+  }
+{% endblock style %}
+
+
+{% block body %}
+<a href="/"><button type="button" class="btn btn-success mb-4">Back</button></a>
+<div class= "student-table">
+    {% for day in days %}
+
+    {% endfor %}
+
+  <div class="accordion" id="accordionExample">
+
+    {% for day in days %}
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="heading{{day.0}}">
+        {% if day.1 != today %}
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{day.0}}" aria-expanded="false" aria-controls="collapse{{day.0}}">
+        
+        {% else %}
+          <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{day.0}}" aria-expanded="true" aria-controls="collapse{{day.0}}">
+
+        {% endif %}
+            {{day.1}}
+          </button>
+        </h2>
+        {% if day.1 != today %}
+          <div id="collapse{{day.0}}" class="accordion-collapse collapse" aria-labelledby="heading{{day.0}}" data-bs-parent="#accordionExample">
+        {% else %}
+          <div id="collapse{{day.0}}" class="accordion-collapse collapse show" aria-labelledby="heading{{day.0}}" data-bs-parent="#accordionExample">
+        {% endif %}
+          <div class="accordion-body">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th scope="col" style="width:30%;">Time</th>
+                  <th scope="col" style="width:70%;">Tutors</th>
+                </tr>
+              </thead>
+              <tbody>
+              {% for time, time_code in times %}
+                <tr>
+                  <th scope="row">{{time}}</th>
+                  <td>
+                    {% for slot in slots %}
+                      {% if slot.day == day.0 and slot.time == time %}
+                        <button type="button" class="btn btn-primary m-1" disabled style="opacity:1;">{{slot.tutor.first_name}} {{slot.tutor.last_name}}</button>
+                      {% else %}
+                      {% endif %}
+                    {% endfor %}
+                  </td>
+                </tr>
+              {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+
+  </div> <!--accordion-->
+</div> <!--student-table-->
+{% endblock body %}
+
+
+
+    
