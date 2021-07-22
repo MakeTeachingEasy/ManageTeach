@@ -34,7 +34,25 @@
     <a href="/"><button type="button" class="btn btn-info">{{student.grade}}</button></a>
     <a href="/"><button type="button" class="btn btn-success">{{student.board}}</button></a>
     <hr>
-    
+
+
+    <form method= "GET" action="#">      
+        <div class="mb-3">
+            <label for="monthQ" class="form-label"><h6> Records for the month of </h6></label>
+            <select name="monthQ" class="form-select">
+                {% for month in months %}
+                    {% if month == this_month %}
+                        <option value="{{month}}" selected>{{month}}</option>
+                    {% else %}
+                        <option value="{{month}}">{{month}}</option>
+                    {% endif %}
+                {% endfor %}
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary"> Search </button>
+    </form>
+    <hr>
+
     <div class="accordion" id="accordionExample">
     <div class="accordion-item">
         <h2 class="accordion-header" id="headingOne">

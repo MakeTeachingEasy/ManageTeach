@@ -18,17 +18,23 @@ def index(response):
         "user": response.user,
     })
 
-def studentDetails(response, id):
+def studentDetails(response, id, month=datetime.date.today().month):
+    if response.GET !={}:
+        if response.GET.get("monthQ") in MONTHS:
+            month= MONTHS.index(response.GET.get("monthQ"))+1
+        
     student= Student.objects.get(id=id)
     presences= student.personal_logs.filter(is_present=True)
     informed= student.personal_logs.filter(is_present=False, AbsenceType=AbsenceType.objects.get(type="Informed"))
     uninformed= student.personal_logs.filter(is_present=False, AbsenceType=AbsenceType.objects.get(type="Uninformed"))
     return render(response, "main/studentDetails.html", {
         "student":student,
-        "presences": presences.order_by("date").reverse(),
-        "informed":informed.order_by("date").reverse(),
-        "uninformed":uninformed.order_by("date").reverse(),
+        "presences": presences.order_by("date").filter(date__month=month).reverse(),
+        "informed":informed.order_by("date").filter(date__month=month).reverse(),
+        "uninformed":uninformed.order_by("date").filter(date__month=month).reverse(),
         "user": response.user,
+        "months": MONTHS,
+        "this_month": MONTHS[month-1],
     })
 
 def getRecords(response, year= datetime.date.today().year, month=datetime.date.today().month, day=datetime.date.today().day):
