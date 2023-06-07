@@ -6,7 +6,7 @@ import datetime
 # Create your models here.
 
 class Grade(models.Model):
-    grade= models.IntegerField()
+    grade= models.CharField(max_length=10)
     
     def __str__(self):
         return f"{self.grade}"
