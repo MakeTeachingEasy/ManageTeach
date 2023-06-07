@@ -7,13 +7,17 @@ import datetime
 
 MONTHS= ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
 
+# global variables -> non-constant
+grade_values_raw = Grade.objects.order_by().values('grade').distinct()
+grade_values = [ele['grade'] for ele in grade_values_raw]
+
 # Create your views here.
 def index(response):
     students_class_wise= {}
-    for i in range(6,12):
-        students_class_wise[i]=(Student.objects.filter(grade=Grade.objects.get(grade=i)).order_by("f_name"))
+    for grade_value in grade_values:
+        students_class_wise[grade_value]=(Student.objects.filter(grade=Grade.objects.get(grade=grade_value)).order_by("f_name"))
     return render(response, "main/home.html", {
-        "classes": range(6,12),
+        "classes": grade_values,
         "students": students_class_wise,
         "user": response.user,
     })

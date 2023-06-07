@@ -6,10 +6,14 @@ from usersOnly.models import TutorSlot, DAY_CHOICES, TIME_CHOICES
 from django.contrib.auth.models import User
 # Create your views here.
 
+# global variables -> non-constant
+grade_values_raw = Grade.objects.order_by().values('grade').distinct()
+grade_values = [ele['grade'] for ele in grade_values_raw]
+
 def attendenceView(response):
     students_class_wise= {}
-    for i in range(6,12):
-        students_class_wise[i]=(Student.objects.filter(grade=Grade.objects.get(grade=i)).order_by("f_name"))
+    for grade_value in grade_values:
+        students_class_wise[grade_value]=(Student.objects.filter(grade=Grade.objects.get(grade=grade_value)).order_by("f_name"))
     if not response.user.is_authenticated:
         return redirect("/login")
 
