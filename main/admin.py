@@ -5,8 +5,8 @@ from usersOnly.models import TutorSlot
 
 # Register your models here.
 
-admin.site.site_title="Your Institute Admin"
-admin.site.site_header= "Your Institute Portal"
+admin.site.site_title="ManageTeach Admin"
+admin.site.site_header= "ManageTeach Portal"
 
 admin.site.register(Grade)
 admin.site.register(Student)
